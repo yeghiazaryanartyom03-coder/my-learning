@@ -23,9 +23,6 @@ export default async function HomePage() {
 
   const users = await prisma.user.findMany()
 
-  users.map((user)=>{
-    console.log(user)
-  })
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
