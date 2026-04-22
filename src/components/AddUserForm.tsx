@@ -2,10 +2,13 @@
 
 import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function AddUserForm(){
   const [name, setName] = useState("");
   const [email, setEmail] = useState("")
+
+  const router = useRouter()
 
   const handleSubmit = async () => {
     await axios.post("/api/users",{
@@ -14,6 +17,8 @@ export function AddUserForm(){
     })
     setEmail("")
     setName("")
+
+    router.refresh()
   }
 
   return (
