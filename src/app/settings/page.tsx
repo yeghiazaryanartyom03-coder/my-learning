@@ -14,7 +14,7 @@ export default async function SettingsPage() {
         <section className="flex-1">
           <Header />
 
-          <div className="p-6 lg:p-8">
+          <div className="p-6 lg:p-8 ">
             {currentUser ? (
               <SettingsForm
                 initialName={currentUser.name ?? ""}
