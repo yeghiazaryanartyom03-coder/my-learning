@@ -37,7 +37,7 @@ export function SettingsForm({initialEmail,initialName}:SettingsFormProps){
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-lg p-3 text-black"
+            className="w-full rounded-lg p-3 text-white"
             placeholder="Enter your name"
           />
         </div>
@@ -47,7 +47,7 @@ export function SettingsForm({initialEmail,initialName}:SettingsFormProps){
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg p-3 text-black"
+            className="w-full rounded-lg p-3 text-white"
             placeholder="Enter your email"
           />
         </div>
