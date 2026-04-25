@@ -20,15 +20,17 @@ model User {
   created  DateTime @default(now())
   updateAt DateTime @updatedAt 
 
-  projects Projects[]
+  projects Project[]
 }
 
-model Projects {
+model Project {
   id           String     @id @default(cuid())
   title        String 
   description  String?
+  status       String
+  progress     Int
   createdAt    DateTime   @default(now())
-
+  
   userId       String
   user         User       @relation(fields: [userId], references: [id])
 }

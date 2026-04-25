@@ -9,6 +9,7 @@ const navItems = [
   { href: "/billing", label: "Billing" },
   { href: "/profile", label: "Profile" },
   { href: "/settings", label: "Settings" },
+  { href: "/projects",label: "Projects" }
 ];
 
 export function Sidebar() {
