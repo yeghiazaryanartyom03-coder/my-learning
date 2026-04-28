@@ -4,43 +4,44 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface AddProjectFormProps{
-  onSuccess?: ()=> void;
+interface AddProjectFormProps {
+  onSuccess?: () => void;
 }
 
-export function AddProjectForm({onSuccess}: AddProjectFormProps ){
+export function AddProjectForm({ onSuccess }: AddProjectFormProps) {
   const router = useRouter();
 
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("in Progress");
-  const [description, setDescription ] = useState("");
+  const [description, setDescription] = useState("");
   const [progress, setProgress] = useState(0);
+  const [dueDate, setDueDate] = useState("");
 
   const handleSubmit = async () => {
-    try{
-      await axios.post("/api/projects",{
+    try {
+      await axios.post("/api/projects", {
         title,
         status,
         description,
         progress,
-      })
+        dueDate: dueDate || null,
+      });
 
       setProgress(0);
       setDescription("");
-      setStatus("")
+      setStatus("");
       setTitle("");
-      onSuccess?.()
-      router.refresh()
-    }catch(error){
-      console.log(error)
+      setDueDate("");
+      onSuccess?.();
+      router.refresh();
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  return(
-     <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-6 shadow-[0_16px_40px_rgba(2,8,23,0.22)]">
-      <h2 className="text-2xl font-semibold text-white">
-        Create New Project
-      </h2>
+  return (
+    <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-6 shadow-[0_16px_40px_rgba(2,8,23,0.22)]">
+      <h2 className="text-2xl font-semibold text-white">Create New Project</h2>
 
       <div className="mt-6 space-y-4">
         <input
@@ -57,12 +58,15 @@ export function AddProjectForm({onSuccess}: AddProjectFormProps ){
           className="min-h-30 w-full rounded-2xl bg-[#15243d] p-4 text-white outline-none"
         />
 
-        <input
-          placeholder="Status"
+        <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="w-full rounded-2xl bg-[#15243d] p-4 text-white outline-none"
-        />
+          className="w-full rounded-xl border border-white/10 bg-[#101a2d] px-4 py-3 text-white outline-none"
+        >
+          <option value="PLANNING">PLANNING</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="COMPLETED">COMPLETED</option>
+        </select>
 
         <input
           type="number"
@@ -70,6 +74,13 @@ export function AddProjectForm({onSuccess}: AddProjectFormProps ){
           value={progress}
           onChange={(e) => setProgress(Number(e.target.value))}
           className="w-full rounded-2xl bg-[#15243d] p-4 text-white outline-none"
+        />
+
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          className="w-full rounded-xl border border-white/10 bg-[#101a2d] px-4 py-3 text-white outline-none"
         />
 
         <button
@@ -81,6 +92,5 @@ export function AddProjectForm({onSuccess}: AddProjectFormProps ){
         </button>
       </div>
     </div>
-  )
-
+  );
 }

@@ -11,6 +11,7 @@ interface Project{
   progress: number,
   id: string,
   status: string,
+  dueDate: Date | null
 }
 
 interface EditProjectForm{
@@ -30,6 +31,10 @@ export function EditProjectForm({
   const [ progress, setProgress ] = useState(project.progress)
   const [ description, setDescription] = useState<string|null>(project.description)
   const [ status, setStatus ] = useState(project.status)
+  const [ dueDate, setDueDate ] = useState(
+    project.dueDate
+      ? new Date(project.dueDate).toISOString().split("T")[0]
+      : "")
   const [ isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,7 +47,8 @@ export function EditProjectForm({
         title,
         progress,
         description: description || null,
-        status
+        status,
+        dueDate: dueDate || null
       })
 
       router.refresh()
@@ -85,6 +91,13 @@ export function EditProjectForm({
         min={0}
         max={100}
         onChange={(e) => setProgress(Number(e.target.value))}
+        className="w-full rounded-xl border border-white/10 bg-[#101a2d] px-4 py-3 text-white outline-none"
+      />
+
+      <input 
+        type="date" 
+        value={dueDate} 
+        onChange={(e)=> setDueDate(e.target.value)}
         className="w-full rounded-xl border border-white/10 bg-[#101a2d] px-4 py-3 text-white outline-none"
       />
 
