@@ -13,7 +13,7 @@ export async function PATCH(request:Request,{params}: Params){
 
     const body = await request.json()
 
-    const {title, description, status, progress} = body
+    const {title, description, status, progress, dueDate} = body
 
     const updatedProject = await prisma.project.update({
       where:{
@@ -21,15 +21,25 @@ export async function PATCH(request:Request,{params}: Params){
       },
       data:{
         title,
-        description,
+        description: description || null,
         status,
-        progress,
+        progress: Number(progress),
+        dueDate: dueDate ? new Date(dueDate) : null
       }
     })
 
     return NextResponse.json(updatedProject,{ status: 200 });
   }catch(error){
     console.error(error)
+    
+    return NextResponse.json(
+      {
+        message: "Failed to update project",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
+
   }
 }
 
