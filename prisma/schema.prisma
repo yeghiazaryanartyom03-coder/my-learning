@@ -29,6 +29,7 @@ model Project {
   description  String?
   status       String
   progress     Int
+  dueDate      DateTime?
   createdAt    DateTime   @default(now())
   
   userId       String
