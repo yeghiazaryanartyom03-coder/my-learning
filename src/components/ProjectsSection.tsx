@@ -14,6 +14,7 @@ interface Project {
   progress: number;
   createdAt: Date;
   userId: string;
+  dueDate: Date | null;
 }
 
 interface ProjectsSectionInterface {
@@ -24,7 +25,20 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
   const [isOpen, setIsOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState("ALL");
+  const [searchTitle, setSearchTitle] = useState("");
+
+  const statuses = ["ALL", "IN_PROGRESS", "COMPLETED", "PLANNING"];
+
   const router = useRouter();
+
+  const filtredProjects = projects.filter((project) => {
+    return (
+      (selectedStatus === "ALL" || project.status === selectedStatus) &&
+      project.title.toLowerCase().includes(searchTitle.toLowerCase())
+    );
+  });
+
   const handleDeleting = async (id: string) => {
     try {
       setDeletingId(id);
@@ -39,6 +53,31 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
     }
   };
 
+  const totalProjects = projects.length;
+
+  const inProgressProjects = projects.filter(
+    (project) => project.status === "IN_PROGRESS",
+  ).length;
+
+  const completedProjects = projects.filter(
+    (project) => project.status === "COMPLETED",
+  ).length;
+
+  const averageProgress =
+    totalProjects > 0
+      ? Math.round(
+          projects.reduce((sum, project) => sum + project.progress, 0) /
+            totalProjects,
+        )
+      : 0;
+
+  const overdueProjects = projects.filter(
+    (project) =>
+      project.dueDate &&
+      new Date(project.dueDate) < new Date() &&
+      project.status !== "COMPLETED",
+  ).length;
+
   return (
     <>
       <div className="mb-8 flex items-center justify-between">
@@ -51,19 +90,77 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
             My Projects
           </h1>
 
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="rounded-2xl bg-linear-to-r from-[#2f6feb] to-[#22d3ee] px-5 py-3 font-medium text-white shadow-lg cursor-pointer mt-3.5"
+          >
+            {isOpen ? "Close Form" : "+ New Project"}
+          </button>
+          <div className="mb-8 grid gap-4 grid-cols-4 mt-5">
+            <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-5 ">
+              <p className="text-sm text-[#8ea3bf]">Total Projects</p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">
+                {totalProjects}
+              </h2>
+            </div>
+
+            <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-5 ">
+              <p className="text-sm text-[#8ea3bf]">In Progress</p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">
+                {inProgressProjects}
+              </h2>
+            </div>
+
+            <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-5">
+              <p className="text-sm text-[#8ea3bf]">Completed</p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">
+                {completedProjects}
+              </h2>
+            </div>
+            <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-5">
+              <p className="text-sm text-[#8ea3bf]">Overdue Projects</p>
+
+              <h2 className={`mt-3 text-3xl font-semibold ${overdueProjects>0?"text-red-400":"text-white"} `}>
+                {overdueProjects}
+              </h2>
+            </div>
+            <div className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-5">
+              <p className="text-sm text-[#8ea3bf]">Average Progress</p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">
+                {averageProgress}%
+              </h2>
+            </div>
+          </div>
           <p className="mt-2 text-sm text-[#8ea3bf]">
             Track progress, status and deadlines of your projects
           </p>
         </div>
-
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="rounded-2xl bg-linear-to-r from-[#2f6feb] to-[#22d3ee] px-5 py-3 font-medium text-white shadow-lg cursor-pointer"
-        >
-          {isOpen ? "Close Form" : "+ New Project"}
-        </button>
       </div>
-
+      <div className="mb-8 flex flex-wrap gap-3">
+        {statuses.map((status) => (
+          <button
+            key={status}
+            type="button"
+            onClick={() => setSelectedStatus(status)}
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+              selectedStatus === status
+                ? "bg-[#22d3ee] text-[#020617]"
+                : "border border-white/10 text-[#8ea3bf] hover:bg-white/5"
+            }`}
+          >
+            {status}
+          </button>
+        ))}
+      </div>
+      <div className="mb-8">
+        <input
+          type="text"
+          placeholder="Search projects..."
+          value={searchTitle}
+          onChange={(e) => setSearchTitle(e.target.value)}
+          className="w-full rounded-2xl border border-white/10 bg-[#101a2d] px-5 py-4 text-white outline-none placeholder:text-[#8ea3bf]"
+        />
+      </div>
       {isOpen && (
         <div className="mb-8">
           <AddProjectForm
@@ -74,9 +171,9 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
         </div>
       )}
 
-      {projects.length > 0 ? (
+      {filtredProjects.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project) => (
+          {filtredProjects.map((project) => (
             <div
               key={project.id}
               className="rounded-3xl border border-white/5 bg-[#101a2d]/90 p-6 shadow-[0_16px_40px_rgba(2,8,23,0.22)]"
@@ -114,12 +211,24 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
               <div className="mt-6 text-sm text-[#8ea3bf]">
                 Created: {new Date(project.createdAt).toLocaleDateString()}
               </div>
-
+              <div className="mt-4 text-sm text-[#8ea3bf]">
+                Due Date:{" "}
+                {project.dueDate
+                  ? new Date(project.dueDate).toLocaleDateString()
+                  : "No deadline"}
+              </div>
+              {project.dueDate &&
+                new Date(project.dueDate) < new Date() &&
+                project.status !== "COMPLETED" && (
+                  <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-400">
+                    ⚠ This project is overdue
+                  </div>
+                )}
               <button
                 onClick={() => handleDeleting(project.id)}
                 type="button"
                 disabled={deletingId === project.id}
-                className="rounded-xl border border-red-500/30 px-4 py-2 text-sm font-medium text-red-400 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-xl border border-red-500/30 px-4 py-2 text-sm font-medium text-red-400 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50 "
               >
                 {deletingId === project.id ? "Deleting..." : "Delete"}
               </button>
