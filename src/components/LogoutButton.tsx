@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast } from "sonner";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -13,8 +14,8 @@ export function LogoutButton() {
       router.push("/login");
       router.refresh();
     } catch (error) {
-       console.error("LOGOUT ERROR:", error);
-       alert("Logout failed");
+      console.error("LOGOUT ERROR:", error);
+      toast.error("Logout failed");
     }
   };
   return (

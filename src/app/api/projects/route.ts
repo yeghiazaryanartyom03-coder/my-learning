@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
+import { getCurrentUser } from "@/lib/getCurrentUser";
 
 export async function GET(){
   const projects = prisma.project.findMany({
@@ -15,7 +16,7 @@ export async function POST(req: Request){
   try{
     const body = await req.json()
     
-    const currentUser = await prisma.user.findFirst()
+    const currentUser = await getCurrentUser()
 
     if(!currentUser){
       return NextResponse.json(
@@ -28,12 +29,13 @@ export async function POST(req: Request){
       data: {
         user:{
           connect: {
-            id: currentUser.id
+            id: currentUser.userId
           }
         } ,
         title: body.title,
         description: body.description,
         status: body.status,
+        dueDate: body.dueDate ? new Date(body.dueDate) : null,
         progress: Number(body.progress),
       }
     })

@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -5,7 +6,7 @@ export async function PATCH(req: Request) {
   try {
     const body = await req.json();
 
-    const currentUser = await prisma.user.findFirst();
+    const currentUser = await getCurrentUser()
 
     if (!currentUser) {
       return NextResponse.json(
@@ -16,7 +17,7 @@ export async function PATCH(req: Request) {
 
     const updatedUser = await prisma.user.update({
       where: {
-        id: currentUser.id,
+        id: currentUser?.userId,
       },
       data: {
         name: body.name,

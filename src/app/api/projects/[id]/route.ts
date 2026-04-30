@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 
 interface Params {
   params: Promise<{
@@ -11,6 +12,8 @@ export async function PATCH(request:Request,{params}: Params){
   try{
     const {id} = await params
 
+    const user = await getCurrentUser()
+
     const body = await request.json()
 
     const {title, description, status, progress, dueDate} = body
@@ -18,6 +21,7 @@ export async function PATCH(request:Request,{params}: Params){
     const updatedProject = await prisma.project.update({
       where:{
         id,
+        userId: user?.userId
       },
       data:{
         title,
