@@ -1,46 +1,43 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import axios from "axios"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast } from "sonner";
 
-export default function RegisterPage(){
-  const router = useRouter()
+export default function RegisterPage() {
+  const router = useRouter();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = async (e:React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-
-    try{
-      setIsLoading(true)
-      await axios.post("/api/auth/register",{
+    try {
+      setIsLoading(true);
+      await axios.post("/api/auth/register", {
         name,
         email,
-        password
+        password,
       });
+      toast.success("registration success")
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
 
-      router.push("/login")
-
-    }catch(error){
-      console.error(error)
-
-      alert("registration failed")
-    }finally{
-      setIsLoading(false)
+      toast.error("registration failed");
+    } finally {
+      setIsLoading(false);
     }
-  }
-  
-  return(
-     <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6">
+  };
+
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6">
       <div className="w-full max-w-md rounded-3xl border border-white/5 bg-[#101a2d]/90 p-8 shadow-xl">
-        <h1 className="text-3xl font-semibold text-white">
-          Register
-        </h1>
+        <h1 className="text-3xl font-semibold text-white">Register</h1>
 
         <p className="mt-2 text-sm text-[#8ea3bf]">
           Create your dashboard account
@@ -48,9 +45,7 @@ export default function RegisterPage(){
 
         <form onSubmit={handleRegister} className="mt-8 space-y-5">
           <div>
-            <label className="mb-2 block text-sm text-[#8ea3bf]">
-              Name
-            </label>
+            <label className="mb-2 block text-sm text-[#8ea3bf]">Name</label>
 
             <input
               type="text"
@@ -61,9 +56,7 @@ export default function RegisterPage(){
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-[#8ea3bf]">
-              Email
-            </label>
+            <label className="mb-2 block text-sm text-[#8ea3bf]">Email</label>
 
             <input
               type="email"
@@ -98,5 +91,5 @@ export default function RegisterPage(){
         </form>
       </div>
     </main>
-  )
+  );
 }

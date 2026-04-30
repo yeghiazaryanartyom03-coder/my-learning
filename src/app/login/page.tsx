@@ -1,56 +1,50 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function LoginPage() {
-  const [ password, setPassword ] = useState("")
-  const [ isLoading, setIsLoading] = useState(false)
-  const [ email, setEmail] = useState("")
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    try{
-      setIsLoading(true)
+    try {
+      setIsLoading(true);
 
-      await axios.post("api/auth/login",{
+      await axios.post("api/auth/login", {
         email,
-        password
+        password,
       });
-
-      router.push("/")
-      router.refresh()
-    }catch(error){
-      console.error(error)
-      alert("login failed")
-    }finally{
-      setIsLoading(false)
+      toast.success("login successfull")
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      toast.error("login failed");
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
-  return(
+  return (
     <main className="min-h-screen bg-slate-950 flex items-center justify-center px-6">
       <div className="w-full max-w-md rounded-3xl border border-white/5 bg-[#101a2d]/90 p-8 shadow-xl">
-        <h1 className="text-3xl font-semibold text-white">
-          Login
-        </h1>
+        <h1 className="text-3xl font-semibold text-white">Login</h1>
 
         <p className="mt-2 text-sm text-[#8ea3bf]">
           Welcome back to your dashboard
         </p>
 
-        <form
-          onSubmit={handleLogin}
-          className="mt-8 space-y-5"
-        >
+        <form onSubmit={handleLogin} className="mt-8 space-y-5">
           <div>
-            <label className="mb-2 block text-sm text-[#8ea3bf]">
-              Email
-            </label>
+            <label className="mb-2 block text-sm text-[#8ea3bf]">Email</label>
 
             <input
               type="email"
@@ -85,6 +79,5 @@ export default function LoginPage() {
         </form>
       </div>
     </main>
-  )
+  );
 }
-
