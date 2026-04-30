@@ -3,6 +3,7 @@
 import axios from "axios"
 import {useRouter} from "next/navigation"
 import { useState } from "react"
+import { toast } from "sonner";
 
 interface SettingsFormProps {
   initialName: string;
@@ -21,10 +22,11 @@ export function SettingsForm({initialEmail,initialName}:SettingsFormProps){
         name,
         email,
       });
-
+      toast.success("Profile updated successfully")
       router.refresh()
     }catch(error){
       console.log(error)
+      toast.error("failed to update profile")
     }
   }
    return (
