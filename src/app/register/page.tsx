@@ -23,8 +23,8 @@ export default function RegisterPage() {
         email,
         password,
       });
-      toast.success("registration success")
       router.push("/login");
+      toast.success("registration success")
     } catch (error) {
       console.error(error);
 
