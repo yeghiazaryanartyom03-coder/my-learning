@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { LogoutButton } from "./LogoutButton";
 
 function getPageTitle(pathname: string) {
   switch (pathname) {
@@ -55,7 +56,7 @@ export function Header() {
           <div className="hidden rounded-2xl border border-white/5 bg-white/3 px-4 py-2 text-sm text-[#8ea3bf] md:block">
             ar******@gmail.com
           </div>
-
+          <LogoutButton />
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-[#2f6feb] to-[#22d3ee] text-sm font-bold text-white shadow-[0_12px_28px_rgba(47,111,235,0.35)]">
             A
           </div>
