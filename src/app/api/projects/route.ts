@@ -3,13 +3,36 @@ import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/getCurrentUser";
 
 export async function GET(){
-  const projects = prisma.project.findMany({
+  try{
+    const currentUser = await getCurrentUser()
+
+    if(!currentUser){
+      return NextResponse.json(
+        {message: "Unauthorized"},
+        {status:401}
+      )
+    }
+
+    const projects = await prisma.project.findMany({
+      where: {
+        userId: currentUser?.userId
+      },
     orderBy:{
       createdAt: "desc",
     },
   });
 
   return NextResponse.json(projects)
+  }catch(error){
+    console.error(error)
+
+    return NextResponse.json(
+      {message: "Something went wrong"},
+      {status: 500}
+
+    )
+  }
+  
 }
 
 export async function POST(req: Request){

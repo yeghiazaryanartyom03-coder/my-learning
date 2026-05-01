@@ -44,7 +44,7 @@ export async function POST(request:Request){
     const accessToken = jwt.sign(
       {
         userId: user.id,
-        emile: user.email
+        email: user.email
       },
       process.env.JWT_SECRET!,
       {

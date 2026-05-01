@@ -43,7 +43,7 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
     try {
       setDeletingId(id);
 
-      await axios.delete(`api/projects/${id}`);
+      await axios.delete(`/api/projects/${id}`);
 
       router.refresh();
     } catch (error) {

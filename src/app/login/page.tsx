@@ -18,7 +18,7 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
 
-      await axios.post("api/auth/login", {
+      await axios.post("/api/auth/login", {
         email,
         password,
       });

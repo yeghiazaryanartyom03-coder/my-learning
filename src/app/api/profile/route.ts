@@ -23,6 +23,13 @@ export async function PATCH(req: Request) {
         name: body.name,
         email: body.email,
       },
+      select:{
+        id:true,
+        name: true,
+        email: true,
+        created: true,
+        updateAt: true,
+      }
     });
 
     return NextResponse.json(updatedUser);

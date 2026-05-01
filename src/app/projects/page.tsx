@@ -9,6 +9,10 @@ export default async function ProjectsPage() {
   
   const user = await getCurrentUser()
 
+   if (!user) {
+    return <div>Unauthorized</div>;
+  }
+
   const projects = await prisma.project.findMany({
     where:{
       userId: user?.userId,

@@ -43,7 +43,7 @@ export function EditProjectForm({
     try{
       setIsLoading(true)
 
-      await axios.patch(`api/projects/${project.id}`,{
+      await axios.patch(`/api/projects/${project.id}`,{
         title,
         progress,
         description: description || null,

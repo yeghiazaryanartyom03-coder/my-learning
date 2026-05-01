@@ -12,7 +12,7 @@ export function AddProjectForm({ onSuccess }: AddProjectFormProps) {
   const router = useRouter();
 
   const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("in Progress");
+  const [status, setStatus] = useState("IN_PROGRESS");
   const [description, setDescription] = useState("");
   const [progress, setProgress] = useState(0);
   const [dueDate, setDueDate] = useState("");
@@ -29,7 +29,7 @@ export function AddProjectForm({ onSuccess }: AddProjectFormProps) {
 
       setProgress(0);
       setDescription("");
-      setStatus("");
+      setStatus("IN_PROGRESS");
       setTitle("");
       setDueDate("");
       onSuccess?.();

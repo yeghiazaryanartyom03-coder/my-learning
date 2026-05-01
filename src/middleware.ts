@@ -5,10 +5,11 @@ export function middleware(request: NextRequest){
 
   const isAuthPage = 
     request.nextUrl.pathname.startsWith("/login") || 
-    request.nextUrl.pathname.startsWith("/auth")
+    request.nextUrl.pathname.startsWith("/auth") || 
+    request.nextUrl.pathname.startsWith("/register")
 
   const isDashboardPage = 
-    request.nextUrl.pathname.startsWith("/dashboard") ||
+    request.nextUrl.pathname.startsWith("/") ||
     request.nextUrl.pathname.startsWith("/projects") ||
     request.nextUrl.pathname.startsWith("/profile") ||
     request.nextUrl.pathname.startsWith("/settings")

@@ -14,9 +14,30 @@ export async function PATCH(request:Request,{params}: Params){
 
     const user = await getCurrentUser()
 
+    if (!user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json()
 
     const {title, description, status, progress, dueDate} = body
+
+    const existingProject = await prisma.project.findFirst({
+      where: {
+        id,
+        userId: user.userId,
+      },
+    });
+
+    if (!existingProject) {
+      return NextResponse.json(
+        { message: "Project not found" },
+        { status: 404 }
+      );
+    }
 
     const updatedProject = await prisma.project.update({
       where:{
@@ -49,7 +70,30 @@ export async function PATCH(request:Request,{params}: Params){
 
 export async function DELETE(_:Request,{params}:Params){
   try{
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const {id} = await params;
+
+     const existingProject = await prisma.project.findFirst({
+      where: {
+        id,
+        userId: currentUser.userId,
+      },
+    });
+
+    if (!existingProject) {
+      return NextResponse.json(
+        { message: "Project not found" },
+        { status: 404 }
+      );
+    }
 
     await prisma.project.delete({
       where:{
