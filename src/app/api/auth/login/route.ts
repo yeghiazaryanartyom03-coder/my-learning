@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { apiError } from "@/lib/apiError"
 
 export async function POST(request:Request){
   try{
@@ -11,7 +12,7 @@ export async function POST(request:Request){
 
     if(!email || !password){
       return NextResponse.json(
-        {message: "Email and password are required"},
+        apiError("Email and password are required",400),
         {status: 400}
       )
     }
@@ -24,7 +25,7 @@ export async function POST(request:Request){
 
     if(!user || !user.password) {
       return NextResponse.json(
-        {message:"invalid credentials"},
+        apiError("invalid credentials",401),
         {status: 401}
       )
     }
@@ -36,8 +37,8 @@ export async function POST(request:Request){
 
     if(!isPasswordCorrect){
       return NextResponse.json(
-        {message: "invalid credentials"},
-        { status: 401 }
+        apiError("invalid credentials",401),
+        {status: 401}
       )
     }
 
@@ -48,7 +49,7 @@ export async function POST(request:Request){
       },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "1d",
+        expiresIn: "7d",
       }
     );
 
@@ -77,8 +78,9 @@ export async function POST(request:Request){
     console.error(error)
 
     return NextResponse.json(
-      {message: "Faild to login"},
-      {status: 500}
+      apiError("Faild to login", 500),
+      {status:500}
+
     )
   }
   

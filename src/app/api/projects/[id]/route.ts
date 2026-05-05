@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { apiError } from "@/lib/apiError";
 
 interface Params {
   params: Promise<{
@@ -16,8 +17,8 @@ export async function PATCH(request:Request,{params}: Params){
 
     if (!user) {
       return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
+        apiError("Unauthorized",401),
+        {status: 401}
       );
     }
 
@@ -34,15 +35,15 @@ export async function PATCH(request:Request,{params}: Params){
 
     if (!existingProject) {
       return NextResponse.json(
-        { message: "Project not found" },
-        { status: 404 }
+        apiError("Project not found",404),
+        {status: 404}
+
       );
     }
 
     const updatedProject = await prisma.project.update({
       where:{
-        id,
-        userId: user?.userId
+        id
       },
       data:{
         title,
@@ -58,13 +59,9 @@ export async function PATCH(request:Request,{params}: Params){
     console.error(error)
     
     return NextResponse.json(
-      {
-        message: "Failed to update project",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
-
+      apiError("Failed to update project",500),
+      {status: 500}
+    )
   }
 }
 
@@ -74,14 +71,14 @@ export async function DELETE(_:Request,{params}:Params){
 
     if (!currentUser) {
       return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
+        apiError("Unauthorized", 401),
+        {status: 401}
       );
     }
 
     const {id} = await params;
 
-     const existingProject = await prisma.project.findFirst({
+    const existingProject = await prisma.project.findFirst({
       where: {
         id,
         userId: currentUser.userId,
@@ -106,7 +103,7 @@ export async function DELETE(_:Request,{params}:Params){
     console.error("DELETE PROJECT ERROR:",error)
 
     return NextResponse.json(
-      {message:"Failed to delete project"},
+      apiError("Failed to delete project", 500),
       {status: 500}
     )
   }

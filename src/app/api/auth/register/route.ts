@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 import bcrypt from "bcrypt"
+import { apiError } from "@/lib/apiError";
 
 export async function POST(request: Request){
   try{
@@ -10,8 +11,9 @@ export async function POST(request: Request){
 
     if(!email || !password) {
       return NextResponse.json(
-        {message: "Emile and password are required"},
-        { status: 400 }
+        apiError("Emile and password are required", 400),
+        {status: 400}
+
       );
     }
 
@@ -23,8 +25,8 @@ export async function POST(request: Request){
 
     if(existingUser){
       return NextResponse.json(
-        {message:"user already exist"},
-        {status:409}
+        apiError("user already exist",409),
+        {status: 409}
       )
     }
 
@@ -51,8 +53,8 @@ export async function POST(request: Request){
     console.error(error)
 
     return NextResponse.json(
-      {message: "Something Went Wrong"},
-      { status: 500 }
+      apiError("Something Went Wrong",500),
+      {status:500}
     )
   }
 }

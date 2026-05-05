@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { apiError } from "@/lib/apiError";
 
 export async function GET(){
   try{
@@ -8,8 +9,9 @@ export async function GET(){
 
     if(!currentUser){
       return NextResponse.json(
-        {message: "Unauthorized"},
+        apiError("Unauthorized", 401),
         {status:401}
+        
       )
     }
 
@@ -27,9 +29,8 @@ export async function GET(){
     console.error(error)
 
     return NextResponse.json(
-      {message: "Something went wrong"},
+      apiError("Something went wrong", 500),
       {status: 500}
-
     )
   }
   
@@ -43,8 +44,8 @@ export async function POST(req: Request){
 
     if(!currentUser){
       return NextResponse.json(
-        {error: "User not found"},
-        {status: 404},
+        apiError("Unauthoraized",404),
+        {status: 404}
       )
     }
 
@@ -68,7 +69,7 @@ export async function POST(req: Request){
     console.error("POST /api/projects error:", error);
 
     return NextResponse.json(
-      {error: "Something went wrong"},
+      apiError("Something went wrong", 500),
       {status: 500}
     );
   }
