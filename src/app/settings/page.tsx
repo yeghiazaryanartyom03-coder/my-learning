@@ -1,8 +1,10 @@
 import { Header } from "@/components/Header";
-import { SettingsForm } from "@/components/SettingsForm";
+import { ChangeNameForm } from "@/components/ChangeNameForm";
 import { Sidebar } from "@/components/Sidebar";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/lib/prisma";
+import { ChangeEmailForm } from "@/components/ChangeEmailForm";
+import { ChangePasswordForm } from "@/components/ChangePasswordForm";
 
 export default async function SettingsPage() {
   const currentUser = await getCurrentUser()
@@ -30,14 +32,13 @@ export default async function SettingsPage() {
           <Header />
 
           <div className="p-6 lg:p-8 ">
-            {currentUser ? (
-              <SettingsForm
+            
+              <ChangeNameForm
                 initialName={dbUser.name ?? ""}
-                initialEmail={dbUser.email}
               />
-            ) : (
-              <p className="text-slate-400">No user found in database.</p>
-            )}
+
+              <ChangeEmailForm currentEmail={dbUser.email} />
+              <ChangePasswordForm />
           </div>
         </section>
       </div>
