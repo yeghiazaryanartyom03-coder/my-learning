@@ -142,7 +142,7 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
             key={status}
             type="button"
             onClick={() => setSelectedStatus(status)}
-            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition cursor-pointer ${
               selectedStatus === status
                 ? "bg-[#22d3ee] text-[#020617]"
                 : "border border-white/10 text-[#8ea3bf] hover:bg-white/5"
@@ -228,14 +228,14 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
                 onClick={() => handleDeleting(project.id)}
                 type="button"
                 disabled={deletingId === project.id}
-                className="rounded-xl border border-red-500/30 px-4 py-2 text-sm font-medium text-red-400 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50 "
+                className="cursor-pointer rounded-xl border border-red-500/30 px-4 py-2 text-sm font-medium text-red-400 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50 "
               >
                 {deletingId === project.id ? "Deleting..." : "Delete"}
               </button>
               <button
                 type="button"
                 onClick={() => setEditingId(project.id)}
-                className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-[#8ea3bf] transition hover:bg-white/5"
+                className="cursor-pointer rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-[#8ea3bf] transition hover:bg-white/5"
               >
                 Edit
               </button>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -76,6 +77,18 @@ export default function LoginPage() {
           >
             {isLoading ? "Loading..." : "Login"}
           </button>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-slate-400">
+              Don&apos;t have an account?
+            </p>
+
+            <Link
+              href="/register"
+              className="mt-3 inline-flex w-full items-center justify-center rounded-xl border border-slate-700 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-blue-500 hover:bg-slate-800 hover:text-white"
+            >
+              Create account
+            </Link>
+          </div>
         </form>
       </div>
     </main>

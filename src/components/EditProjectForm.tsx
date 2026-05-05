@@ -104,7 +104,7 @@ export function EditProjectForm({
       <div className="flex gap-3">
         <button
           disabled={isLoading}
-          className="rounded-xl bg-[#2f6feb] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-xl bg-[#2f6feb] px-4 py-2 text-sm font-medium text-white disabled:opacity-50 cursor-pointer"
         >
           {isLoading ? "Saving..." : "Save"}
         </button>
@@ -112,7 +112,7 @@ export function EditProjectForm({
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-[#8ea3bf]"
+          className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-[#8ea3bf] cursor-pointer"
         >
           Cancel
         </button>

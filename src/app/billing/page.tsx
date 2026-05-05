@@ -58,7 +58,7 @@ export default function BillingPage() {
             </div>
 
             <div className="mt-8">
-              <button className="rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500">
+              <button className="cursor-pointer rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500">
                 Upgrade Plan
               </button>
             </div>
