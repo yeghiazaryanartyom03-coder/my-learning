@@ -8,11 +8,8 @@ export async function GET(){
     const currentUser = await getCurrentUser()
 
     if(!currentUser){
-      return NextResponse.json(
-        apiError("Unauthorized", 401),
-        {status:401}
-        
-      )
+      return apiError("Unauthorized", 401)
+       
     }
 
     const projects = await prisma.project.findMany({
@@ -28,10 +25,7 @@ export async function GET(){
   }catch(error){
     console.error(error)
 
-    return NextResponse.json(
-      apiError("Something went wrong", 500),
-      {status: 500}
-    )
+    return apiError("Something went wrong", 500)
   }
   
 }
@@ -43,10 +37,7 @@ export async function POST(req: Request){
     const currentUser = await getCurrentUser()
 
     if(!currentUser){
-      return NextResponse.json(
-        apiError("Unauthoraized",404),
-        {status: 404}
-      )
+      return apiError("Unauthoraized",404)
     }
 
     const project = await prisma.project.create({
@@ -68,9 +59,7 @@ export async function POST(req: Request){
   }catch(error){
     console.error("POST /api/projects error:", error);
 
-    return NextResponse.json(
-      apiError("Something went wrong", 500),
-      {status: 500}
-    );
+    return apiError("Something went wrong", 500)
+      
   }
 }

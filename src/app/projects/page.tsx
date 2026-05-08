@@ -2,12 +2,11 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { prisma } from "@/lib/prisma";
 import { ProjectsSection } from "@/components/ProjectsSection";
-import { getCurrentUser } from "@/lib/getCurrentUser";
-
+import { requireUser } from "@/lib/requireUser";
 
 export default async function ProjectsPage() {
   
-  const user = await getCurrentUser()
+  const user = await requireUser("/projects")
 
    if (!user) {
     return <div>Unauthorized</div>;

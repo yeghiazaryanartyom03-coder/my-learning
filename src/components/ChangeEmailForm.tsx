@@ -1,10 +1,10 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 import { getAxiosErrorMessage } from "@/lib/getAxiosErrorMessage";
+import { api } from "@/lib/api";
 
 interface ChangeEmailFormProps {
     currentEmail: string,
@@ -33,7 +33,7 @@ export function ChangeEmailForm({ currentEmail }: ChangeEmailFormProps) {
         try {
             setIsLoading(true)
 
-            await axios.patch("/api/settings/change-email", {
+            await api.patch("/api/settings/change-email", {
                 newEmail,
                 currentPassword
 

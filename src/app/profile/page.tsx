@@ -1,10 +1,10 @@
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
-import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/requireUser";
 
 export default async function ProfilePage() {
-  const currentUser = await getCurrentUser()
+  const currentUser = await requireUser("/profile")
 
   if(!currentUser){
     return <div>Unauthorized</div>

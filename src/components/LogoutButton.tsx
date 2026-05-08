@@ -1,15 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 export function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/auth/logout");
+      await api.post("/api/auth/logout");
 
       router.push("/login");
       router.refresh();

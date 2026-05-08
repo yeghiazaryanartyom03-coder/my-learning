@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
+import { api } from "@/lib/api";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
 
-      await axios.post("/api/auth/login", {
+      await api.post("/api/auth/login", {
         email,
         password,
       });

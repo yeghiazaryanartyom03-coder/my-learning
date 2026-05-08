@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import axios from "axios";
+import { api } from "@/lib/api";
 
 
 interface Project{
@@ -43,7 +43,7 @@ export function EditProjectForm({
     try{
       setIsLoading(true)
 
-      await axios.patch(`/api/projects/${project.id}`,{
+      await api.patch(`/api/projects/${project.id}`,{
         title,
         progress,
         description: description || null,

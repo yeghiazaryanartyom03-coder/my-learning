@@ -10,11 +10,8 @@ export async function POST(request: Request){
     const {email, password, name} = body;
 
     if(!email || !password) {
-      return NextResponse.json(
-        apiError("Emile and password are required", 400),
-        {status: 400}
-
-      );
+      return apiError("Emile and password are required", 400)
+        
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -24,10 +21,8 @@ export async function POST(request: Request){
     })
 
     if(existingUser){
-      return NextResponse.json(
-        apiError("user already exist",409),
-        {status: 409}
-      )
+      return apiError("user already exist",409)
+       
     }
 
     const hashedPassword = await bcrypt.hash(password,10);
@@ -52,9 +47,7 @@ export async function POST(request: Request){
   }catch(error){
     console.error(error)
 
-    return NextResponse.json(
-      apiError("Something Went Wrong",500),
-      {status:500}
-    )
+    return apiError("Something Went Wrong",500)
+     
   }
 }

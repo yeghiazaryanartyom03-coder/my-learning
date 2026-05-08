@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ export function AddProjectForm({ onSuccess }: AddProjectFormProps) {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("/api/projects", {
+      await api.post("/api/projects", {
         title,
         status,
         description,

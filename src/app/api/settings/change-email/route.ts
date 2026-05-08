@@ -10,10 +10,7 @@ export async function PATCH(request: Request) {
         const currentUser = await getCurrentUser()
 
         if (!currentUser) {
-            return NextResponse.json(
-                apiError("Unauthorized",401),
-                {status: 401}
-            )
+            return apiError("Unauthorized",401)
         }
 
         const body = await request.json()
@@ -21,10 +18,7 @@ export async function PATCH(request: Request) {
         const {currentPassword, newEmail} = body
 
         if (!newEmail || !currentPassword) {
-            return NextResponse.json(
-                apiError("New email and current password are required", 400),
-                {status: 400}
-            );
+            return apiError("New email and current password are required", 400)
         }
 
         const user = await prisma.user.findUnique({
@@ -34,17 +28,11 @@ export async function PATCH(request: Request) {
         })
 
         if (!user) {
-            return NextResponse.json(
-                apiError("user not found", 404),
-                {status: 404}
-            )
+            return apiError("user not found", 404)
         }
 
         if (user.email === newEmail) {
-            return NextResponse.json(
-                apiError("New email must be different from current", 400),
-                {status: 400}
-            )
+            return apiError("New email must be different from current", 400)
         }
 
         const existingUser = await prisma.user.findUnique({
@@ -54,10 +42,7 @@ export async function PATCH(request: Request) {
         });
 
         if (existingUser) {
-            return NextResponse.json(
-                apiError("This email is already taken", 409),
-                {status: 409}
-            )
+            return apiError("This email is already taken", 409)
         }
 
         const isPasswordCorrect = await bcrypt.compare(
@@ -66,10 +51,7 @@ export async function PATCH(request: Request) {
         )
 
         if (!isPasswordCorrect) {
-            return NextResponse.json(
-                apiError("password is incorrect", 400 ),
-                {status: 400}
-            )
+            return apiError("password is incorrect", 400 )
         }
 
         const updatedUser = await prisma.user.update({
@@ -119,10 +101,7 @@ export async function PATCH(request: Request) {
     } catch (error) {
         console.error("CHANGE EMAIL ERROR:", error);
 
-        return NextResponse.json(
-            apiError("Failed to update email",500),
-            {status: 500}
-        );
+        return apiError("Failed to update email",500)
     }
 
 }

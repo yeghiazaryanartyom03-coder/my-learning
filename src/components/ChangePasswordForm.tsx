@@ -1,9 +1,9 @@
 "use client"
 
-import axios from "axios"
 import { useState } from "react"
 import { toast } from "sonner"
 import { getAxiosErrorMessage } from "@/lib/getAxiosErrorMessage";
+import { api } from "@/lib/api";
 
 export function ChangePasswordForm() {
     const [newPassword, setNewPassword] = useState("")
@@ -37,7 +37,7 @@ export function ChangePasswordForm() {
         try {
             setLoading(true)
 
-            await axios.patch("/api/settings/change-password", {
+            await api.patch("/api/settings/change-password", {
                 newPassword,
                 currentPassword,
             })

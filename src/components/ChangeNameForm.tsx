@@ -1,10 +1,10 @@
 "use client";
 
-import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner";
 import { getAxiosErrorMessage } from "@/lib/getAxiosErrorMessage";
+import { api } from "@/lib/api";
 
 interface SettingsFormProps {
   initialName: string;
@@ -20,7 +20,7 @@ export function ChangeNameForm({ initialName }: SettingsFormProps) {
     e.preventDefault()
     try {
       setIsLoading(true)
-      await axios.patch("/api/settings/change-name", {
+      await api.patch("/api/settings/change-name", {
         action: "name-change",
         name,
       });

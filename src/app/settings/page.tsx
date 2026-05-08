@@ -1,13 +1,13 @@
 import { Header } from "@/components/Header";
 import { ChangeNameForm } from "@/components/ChangeNameForm";
 import { Sidebar } from "@/components/Sidebar";
-import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/lib/prisma";
 import { ChangeEmailForm } from "@/components/ChangeEmailForm";
 import { ChangePasswordForm } from "@/components/ChangePasswordForm";
+import { requireUser } from "@/lib/requireUser";
 
 export default async function SettingsPage() {
-  const currentUser = await getCurrentUser()
+  const currentUser = await requireUser("/settings")
 
   if(!currentUser){
     return <div>Unauthorized</div>

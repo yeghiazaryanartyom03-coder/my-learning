@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
-import { getCurrentUser } from "@/lib/getCurrentUser";
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/requireUser";
 
 function formatDate(date: Date | null) {
   if (!date) {
@@ -13,7 +13,7 @@ function formatDate(date: Date | null) {
 }
 
 export default async function HomePage() {
-  const currentUser = await getCurrentUser();
+  const currentUser = await requireUser("/");
 
   if (!currentUser) {
     return <div>Unauthorized</div>

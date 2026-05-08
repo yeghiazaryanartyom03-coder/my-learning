@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { AddProjectForm } from "./AddProjectForm";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { EditProjectForm } from "./EditProjectForm";
+import { api } from "@/lib/api";
 
 interface Project {
   id: string;
@@ -43,7 +43,7 @@ export function ProjectsSection({ projects }: ProjectsSectionInterface) {
     try {
       setDeletingId(id);
 
-      await axios.delete(`/api/projects/${id}`);
+      await api.delete(`/api/projects/${id}`);
 
       router.refresh();
     } catch (error) {

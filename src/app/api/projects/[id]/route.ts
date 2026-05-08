@@ -16,10 +16,7 @@ export async function PATCH(request:Request,{params}: Params){
     const user = await getCurrentUser()
 
     if (!user) {
-      return NextResponse.json(
-        apiError("Unauthorized",401),
-        {status: 401}
-      );
+      return apiError("Unauthorized",401)
     }
 
     const body = await request.json()
@@ -34,11 +31,7 @@ export async function PATCH(request:Request,{params}: Params){
     });
 
     if (!existingProject) {
-      return NextResponse.json(
-        apiError("Project not found",404),
-        {status: 404}
-
-      );
+      return apiError("Project not found",404)
     }
 
     const updatedProject = await prisma.project.update({
@@ -58,10 +51,7 @@ export async function PATCH(request:Request,{params}: Params){
   }catch(error){
     console.error(error)
     
-    return NextResponse.json(
-      apiError("Failed to update project",500),
-      {status: 500}
-    )
+    return apiError("Failed to update project",500)
   }
 }
 
@@ -70,10 +60,7 @@ export async function DELETE(_:Request,{params}:Params){
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      return NextResponse.json(
-        apiError("Unauthorized", 401),
-        {status: 401}
-      );
+      return apiError("Unauthorized", 401)
     }
 
     const {id} = await params;
@@ -102,10 +89,7 @@ export async function DELETE(_:Request,{params}:Params){
   }catch(error){
     console.error("DELETE PROJECT ERROR:",error)
 
-    return NextResponse.json(
-      apiError("Failed to delete project", 500),
-      {status: 500}
-    )
+    return apiError("Failed to delete project", 500)
   }
 }
 

@@ -11,10 +11,7 @@ export async function PATCH(req: Request) {
     const currentUser = await getCurrentUser()
 
     if (!currentUser) {
-      return NextResponse.json(
-        apiError("User not found", 404),
-        {status: 404}
-      );
+      return apiError("User not found", 404)
     }
     const updatedUser = await prisma.user.update({
       where: {
@@ -36,9 +33,6 @@ export async function PATCH(req: Request) {
   } catch (error) {
     console.error("PATCH /api/settings/change-name error:", error);
 
-    return NextResponse.json(
-      apiError("Something went wrong", 500),
-      {status: 500}
-    );
+    return apiError("Something went wrong", 500)
   }
 }
