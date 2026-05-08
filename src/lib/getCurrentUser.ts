@@ -1,28 +1,33 @@
 import { cookies } from "next/headers";
-import  jwt  from "jsonwebtoken";
+import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 
-interface TokenPayload {
-  email: string;
+export interface TokenPayload extends JwtPayload {
   userId: string;
+  email: string;
 }
 
-export async function getCurrentUser(){
-  try{
-    const cookieStore = await cookies();
-    const token = cookieStore.get("accessToken")?.value
+export async function getCurrentUser() {
+  const cookieStore = await cookies();
 
-    if(!token) return null;
+  const accessToken = cookieStore.get("accessToken")?.value;
 
+  if (!accessToken) {
+    return null;
+  }
+
+  try {
     const decoded = jwt.verify(
-      token,
+      accessToken,
       process.env.JWT_SECRET!
+    ) as TokenPayload;
 
-    ) as TokenPayload
+    return decoded;
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      return null;
+    }
 
-    return decoded
-
-  }catch(error){
-    console.error(error)
-    return null
+    console.error("Invalid access token:", error);
+    return null;
   }
 }

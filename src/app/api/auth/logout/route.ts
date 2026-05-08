@@ -14,5 +14,13 @@ export async function POST(){
     maxAge: 0,
   });
 
+  response.cookies.set("refreshToken", "", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  })
+
   return response
 }
